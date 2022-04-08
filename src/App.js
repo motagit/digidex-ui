@@ -9,6 +9,7 @@ import Form from './components/Form/Form';
 const App = () => {
     const dispatch = useDispatch();
 
+    const [currentId, setCurrentId] = useState(null);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -21,9 +22,8 @@ const App = () => {
         <Container maxwidth="lg">
             <Grow in>
                 <Container>
-                    <Button variant="contained" color="primary" onClick={handleOpen}>Insert Digimon</Button>
-                    <Form isOpened={open} onClose={handleClose}/>
-                    <Posts />
+                    <Form isOpened={open} onClose={handleClose} currentId={currentId} setCurrentId={setCurrentId} />
+                    <Posts openModal={handleOpen} setCurrentId={setCurrentId} />
                 </Container>
             </Grow>
         </Container>

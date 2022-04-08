@@ -1,12 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, CircularProgress, ImageListItem, ImageList } from '@material-ui/core';
+import { Grid, CircularProgress, ImageListItem, ImageList, Button } from '@material-ui/core';
 import Post from './Post/Post';
 
-const Posts = () => {
+const Posts = ({ currentId, setCurrentId, openModal }) => {
     const posts = useSelector((state) => state.posts);
-
-    console.log(posts.length);
 
     return (
         <Grid
@@ -22,9 +20,10 @@ const Posts = () => {
                 <ImageList cols={12} rowHeight={60}>
                     {posts.map((post) => (
                         <ImageListItem key={post._id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Post post={post} />
+                            <Post post={post} setCurrentId={setCurrentId} openModal={openModal}/>
                         </ImageListItem>
                     ))}
+                    <Button variant="contained" color="primary" onClick={() => {openModal(); setCurrentId(null)}}>ADD</Button>
                 </ImageList>
             </Grid>
         )}

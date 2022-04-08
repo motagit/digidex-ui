@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography, Modal, Box, Fade, Grid } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Typography, Modal, Box, Fade, Grid, IconButton } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../../actions/posts';
+import { createPost, updatePost } from '../../actions/posts';
 import './Form.scss';
 
-const Form = ({ isOpened, onClose}) => {
-    const posts = useSelector((state) => state.posts);
+import CloseIcon from '@mui/icons-material/Close';
+
+const Form = ({ isOpened, onClose, currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
-        number: posts.length + 1,
+        number: 0,
         name : '' ,
         iconSource: '',
     });
+    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(post) setPostData(post);
+        if (!post) clear();
+    }, [post])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(createPost(postData));
-        // fazer esquema para fechar modal depois do post
+        if(currentId) {
+            dispatch(updatePost(currentId, postData));
+        } else {
+            dispatch(createPost(postData));
+        }
+        // fazer esquema para fechar modal depois do post aqui
     }
 
-    const clear = () => {
+    console.log(post);
+    console.log(postData);
 
+    const clear = () => {
+        setCurrentId(null);
+        setPostData({ number: 0, name: '', iconSource: ''});
     }
 
     return (
@@ -37,8 +52,15 @@ const Form = ({ isOpened, onClose}) => {
             <Fade in={isOpened}>
                 <Box className="box">
                     <form className="form" autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <Grid container direction={"column"} spacing={3}>
-                            <Typography variant="h6">Insert a Digimon</Typography>
+                        <Grid container direction={"column"} spacing={3} >
+                            <Grid container direction={"row"} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <Typography variant="h6">{currentId  ? 'Edit' : 'Insert'} a Digimon</Typography>
+                                <IconButton style={{padding: '0px'}} onClick={onClose}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </Grid>
+                            
+
                             <Grid item>
                                 <TextField 
                                     className="inputField"
@@ -46,8 +68,7 @@ const Form = ({ isOpened, onClose}) => {
                                     variant="outlined" 
                                     label="Number" 
                                     value={postData.number}
-                                    disabled
-                                    onChange={(e) => setPostData({ ...postData, name: e.target.value })}
+                                    onChange={(e) => setPostData({ ...postData, number: e.target.value })}
                                 />
                             </Grid>
                             <Grid item>
@@ -58,6 +79,7 @@ const Form = ({ isOpened, onClose}) => {
                                     label="Name" 
                                     fullWidth 
                                     value={postData.name}
+                                    // fazer esquema para o valor ser sempre o proximo number
                                     onChange={(e) => setPostData({ ...postData, name: e.target.value })}
                                 />
                             </Grid>
@@ -74,7 +96,6 @@ const Form = ({ isOpened, onClose}) => {
 
                             <Grid item>
                                 <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
-                                <Button variant="contained" color="secondary" size="small" fullWidth onClick={clear}>Clear</Button>
                             </Grid>
 
                         </Grid>
