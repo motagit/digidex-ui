@@ -17,13 +17,12 @@ const Posts = ({ currentId, setCurrentId, openModal }) => {
         >
         {!posts.length ? <CircularProgress /> : (
             <Grid item xs={12}>
-                <ImageList cols={12} rowHeight={60}>
+                <ImageList cols={7} rowHeight={160}>
                     {posts.map((post) => (
                         <ImageListItem key={post._id} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Post post={post} setCurrentId={setCurrentId} openModal={openModal}/>
                         </ImageListItem>
                     ))}
-                    <Button variant="contained" color="primary" onClick={() => {openModal(); setCurrentId(null)}}>ADD</Button>
                 </ImageList>
             </Grid>
         )}
