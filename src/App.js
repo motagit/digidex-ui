@@ -22,7 +22,7 @@ const App = () => {
         <Container maxwidth="lg">
             <Grow in>
                 <Container>
-                    <Form isOpened={open} onClose={handleClose} currentId={currentId} setCurrentId={setCurrentId} />
+                    <Form isOpen={open} onClose={handleClose} currentId={currentId} setCurrentId={setCurrentId} />
                     <Posts openModal={handleOpen} setCurrentId={setCurrentId} />
                 </Container>
             </Grow>

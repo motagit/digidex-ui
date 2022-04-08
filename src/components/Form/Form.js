@@ -7,7 +7,7 @@ import './Form.scss';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-const Form = ({ isOpened, onClose, currentId, setCurrentId }) => {
+const Form = ({ isOpen, onClose, currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
         number: 0,
         name : '' ,
@@ -28,7 +28,10 @@ const Form = ({ isOpened, onClose, currentId, setCurrentId }) => {
             dispatch(updatePost(currentId, postData));
         } else {
             dispatch(createPost(postData));
+            clear();
         }
+        onClose();
+
         // fazer esquema para fechar modal depois do post aqui
     }
 
@@ -43,13 +46,13 @@ const Form = ({ isOpened, onClose, currentId, setCurrentId }) => {
     return (
         <Modal
             className="modal"
-            open={isOpened}
+            open={isOpen}
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             closeAfterTransition
         >
-            <Fade in={isOpened}>
+            <Fade in={isOpen}>
                 <Box className="box">
                     <form className="form" autoComplete="off" noValidate onSubmit={handleSubmit}>
                         <Grid container direction={"column"} spacing={3} >
