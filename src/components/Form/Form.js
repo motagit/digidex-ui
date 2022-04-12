@@ -13,6 +13,7 @@ const Form = ({ isOpen, onClose, currentId, setCurrentId }) => {
         name : '' ,
         iconSource: '',
     });
+    console.log(currentId);
     const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
     const dispatch = useDispatch();
 
@@ -36,7 +37,7 @@ const Form = ({ isOpen, onClose, currentId, setCurrentId }) => {
     }
 
     console.log(post);
-    console.log(postData);
+    // console.log(postData);
 
     const clear = () => {
         setCurrentId(null);
