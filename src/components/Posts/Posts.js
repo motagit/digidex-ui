@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Grid, CircularProgress, ImageListItem, ImageList, Button } from '@material-ui/core';
 import Post from './Post/Post';
 
-const Posts = ({ currentId, setCurrentId, openModal }) => {
+const Posts = () => {
     const posts = useSelector((state) => state.posts);
 
     return (
@@ -17,10 +17,10 @@ const Posts = ({ currentId, setCurrentId, openModal }) => {
         >
         {!posts.length ? <CircularProgress /> : (
             <Grid item xs={12}>
-                <ImageList cols={7} rowHeight={160}>
+                <ImageList cols={7} rowHeight={160} gap={18}>
                     {posts.map((post) => (
                         <ImageListItem key={post._id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Post post={post} setCurrentId={setCurrentId} openModal={openModal}/>
+                            <Post post={post} />
                         </ImageListItem>
                     ))}
                 </ImageList>

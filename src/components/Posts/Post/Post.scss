@@ -4,15 +4,29 @@
   border-radius: 10px;
   height: 100%;
   margin: 0 auto;
-  width: 90%;
+
+  img, span {
+    position: absolute;
+    bottom: 0;
+  }
 
   img {
-    position: absolute;
     margin: auto;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+  }
+
+  span {
+    color: #fff;
+    font-size: 14px;
+    background-color: rgba(0,0,0,.5);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    text-align: center;
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
   }
 }
 
