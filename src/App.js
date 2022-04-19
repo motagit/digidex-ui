@@ -6,17 +6,20 @@ import {
     Routes,
     Route,
   } from "react-router-dom";
-import Sidebar from './components/Navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
+import Form from './components/Form/Form';
   
 const App = () => {
     
 
     return (
         <Router>
-            <Sidebar/>
+            <Navbar/>
             <Routes>
                 <Route path='' exact element={<Home />} />
                 <Route path='/digimon/:id' exact element={<Digimon />} />
+                <Route path='/insertDigimon/' exact element={<Form />} />
+                <Route path='/editDigimon/:id' exact element={<Form />} />
             </Routes>
         </Router>
         
