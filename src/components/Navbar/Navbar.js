@@ -23,7 +23,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,7 +33,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-const Sidebar = ({ openModal }) => {
+const Navbar = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   let navigation = useNavigate();
@@ -59,11 +59,11 @@ const Sidebar = ({ openModal }) => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={location.pathname.includes("digimon") ? () => routeChange('') : toggleDrawer('left',true)}
+            onClick={location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? () => routeChange('') : toggleDrawer('left',true)}
             edge="start"
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
-            {location.pathname.includes("digimon") ? (
+            {location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? (
               <ArrowBackIcon />
             ) : (
               <MenuIcon />
@@ -94,23 +94,15 @@ const Sidebar = ({ openModal }) => {
           <Divider />
           
         <List>
-          {['Insert Digimon', 'Manage'].map((text, index) => (
-            <ListItem button key={text} 
-              onClick={() => {
-                  switch (index) {
-                    case 0:
-                      openModal();
-                      break;
-                    default:
-                      alert(text);
-                  }
-              }
-            }>
-              <ListItemIcon >
-                {index % 2 === 0 ? <AddCircleIcon /> : <ManageAccountsIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+          {[{text: 'Insert Digimon', link: '/insertDigimon/'}, {text: 'Manage', link: ''}].map((object, index) => (
+            <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to={object.link} >
+              <ListItem button key={object.text}>
+                <ListItemIcon >
+                  {index % 2 === 0 ? <AddCircleIcon /> : <ManageAccountsIcon />}
+                </ListItemIcon>
+                <ListItemText primary={object.text} />
+              </ListItem>
+            </Link>
           ))}
         </List>
 
@@ -140,4 +132,4 @@ const Sidebar = ({ openModal }) => {
   );
 }
 
-export default Sidebar;
+export default Navbar;
