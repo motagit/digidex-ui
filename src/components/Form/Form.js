@@ -1,30 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Paper, Typography, Grow, Container , Grid, Divider, Button, Box, InputLabel, Select, MenuItem, FormControl } from '@mui/material';
+import { TextField, Paper, Typography, Grow, Container , Grid, Divider, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton } from '@mui/material';
+import { AddBox } from '@mui/icons-material';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { digimonModel } from '../Models/digimon.model';
 
-
-const Form = ({ currentId, setCurrentId }) => {
+const Form = () => {
     const [postData, setPostData] = useState(digimonModel);
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
+
+    const [attack, setAttack] = useState([{
+        name: '',
+        description: ''
+    }]);
+
+    const handleAttackChange = (e, index) => {
+        const value = e.target.value;
+        const list = [...attack];
+
+        if (e.target.name.includes("Name")) 
+            list[index].name = value
+        else 
+            list[index].description = value
+        setAttack(list);
+        console.log(attack);
+
+    };
+    
+    const handleAttackRemove = (index) => {
+        const list = [...attack];
+        list.splice(index, 1);
+        setAttack(list);
+        console.log(attack);
+
+    };
+    
+    const handleAttackAdd = () => {
+        setAttack([...attack, { name: '', description: '' }]);
+    };
+
+
     useEffect(() => {
         if(post) setPostData(post);
+        if(post) setAttack(post.attacks);
     }, [post])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // fazer validação antes de dar post
 
         if(digimonParams.id) {
+            postData.attacks = attack;
+            console.log(postData);
             dispatch(updatePost(digimonParams.id, postData));
         } else {
+            postData.attacks = attack;
+            console.log(postData);
             dispatch(createPost(postData));
         }
         navigate("/", { replace: true });
@@ -47,9 +84,8 @@ const Form = ({ currentId, setCurrentId }) => {
                     <form className="form" autoComplete="off" noValidate onSubmit={handleSubmit}>
                         <Grid container rowSpacing={3} sx={{padding: 3}}>
                             <Grid item xs={12} direction="row">
-                                <Typography variant="h6">{digimonParams.id  ? 'Edit' : 'Insert'} a Digimon</Typography>
+                                <Typography variant="h5"><b>{digimonParams.id  ? 'Edit' : 'Insert'} a Digimon</b></Typography>
                             </Grid>
-                            
 
                             <Grid item xs={12} direction="row">
                                 <TextField 
@@ -111,7 +147,71 @@ const Form = ({ currentId, setCurrentId }) => {
                                 </FormControl>
                             </Grid>
 
+                            <Grid item xs={12} direction="row">
+                                <TextField
+                                    label="General Information"
+                                    multiline
+                                    rows={6}
+                                    fullWidth
+                                    value={postData.information}
+                                    onChange={(e) => setPostData({ ...postData, information: e.target.value })}
+                                />
+                            </Grid>
 
+                            <Grid item xs={12} direction="row">
+                                <TextField
+                                    label="Design"
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    value={postData.design}
+                                    onChange={(e) => setPostData({ ...postData, design: e.target.value })}
+                                />
+                            </Grid>
+
+                            
+                            <Grid item xs={12} direction="row">
+                                <Typography variant="h6" component="h6" style={{marginBottom: 20}}>
+                                    <b>Attacks</b>
+                                </Typography>
+                                {attack.map((singleAttack, index) => (
+                                    <div key={index} style={index > 0 ? {marginTop: 20} : null}>
+                                        <TextField 
+                                            label="Name" 
+                                            name="Name" 
+                                            style={{marginRight: 10, width: '38%'}}
+                                            value={singleAttack.name}
+                                            onChange={(e) => handleAttackChange(e, index)}
+                                            multiline
+                                            rows={3}
+                                            required
+                                        />
+
+                                    
+                                        <TextField 
+                                            label="Description"
+                                            name="Description" 
+                                            style={{marginRight: 10, width: '40%'}}
+                                            value={singleAttack.description}
+                                            onChange={(e) => handleAttackChange(e, index)}
+                                            multiline
+                                            rows={3}
+                                            required
+                                        />
+
+                                        {attack.length - 1 === index && attack.length < 4 && (
+                                            <IconButton aria-label="add" size="large" onClick={handleAttackAdd}>
+                                                <AddBox fontSize="medium" />
+                                            </IconButton>
+                                        )}
+                                        {attack.length !== 1 && (
+                                            <IconButton aria-label="remove" size="large" onClick={() => handleAttackRemove(index)}>
+                                                <DisabledByDefaultIcon fontSize="medium" />
+                                            </IconButton>
+                                        )}
+                                    </div>
+                                ))}
+                            </Grid>
 
                             <Grid item xs={12} direction="row">
                                 <div className="fileInput">
@@ -128,21 +228,6 @@ const Form = ({ currentId, setCurrentId }) => {
                             </Grid>   
                         </Grid>
                     </form>
-
-                    {/* <Box component="span" sx={{ 
-                    pt: '60px', 
-                    pb: '40px', 
-                    pr:'48px', 
-                    pl: '48px', 
-                    border: '1px dashed grey'}}
-                    style={{
-                        position: 'absolute',
-                        top: 60,
-                        right: 25
-                    }}
-                    >
-                        <img className="image" loading="lazy" src={postData ? postData.iconSource : null} alt="" />
-                    </Box> */}
                 </Paper>
             </Grow>
         </Container>

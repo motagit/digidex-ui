@@ -35,13 +35,13 @@ const Digimon = () => {
                         <Grid item xs={9} direction="column">
                             <Typography variant="body2" component="div">
                                 <span>
-                                    Information Information Information Information Information Information Information Information 
+                                    {postData.information}
                                 </span>
                             </Typography>
                         </Grid>
                         
                         <Grid item xs={3} direction="column" style={{textAlign: 'center'}}>
-                            <Box component="span" sx={{ pt: '60px', pb: '40px', pr:'48px', pl: '48px' ,border: '1px dashed grey' }}>
+                            <Box component="span" sx={{ pt: '60px', pb: '40px', pr:'48px', pl: '48px', ml: '10px' ,border: '1px dashed grey' }}>
                                 <img className="image" loading="lazy" src={postData.iconSource} alt={postData.name} />
                             </Box>
                         </Grid>
@@ -96,45 +96,25 @@ const Digimon = () => {
                                 <b>Attacks</b>
                             </Typography>
                             <ul>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
-                                <li>
-                                    teste
-                                </li>
+                                {postData.attacks.map((singleAttack, index) => (
+                                    <li key={index}>
+                                        <b>{singleAttack.name}</b>: {singleAttack.description}
+                                    </li>
+                                ))}
                             </ul>
                         </Grid>
 
-                        <Grid item xs={12} direction="row">
-                            <Typography variant="h6" component="h6">
-                                <b>Design</b>
-                            </Typography>
-                            <Typography variant="body2" component="div">
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                                Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste 
-                            </Typography>
-                        </Grid>
-                        
+                        {postData.design ? (
+                            <Grid item xs={12} direction="row">
+                                <Typography variant="h6" component="h6">
+                                    <b>Design</b>
+                                </Typography>
+                                <Typography variant="body2" component="div">
+                                    {postData.design}
+                                </Typography>
+                            </Grid>
+                        ) : null}
+
                     </Grid>
                 </Paper>
             </Grow>
