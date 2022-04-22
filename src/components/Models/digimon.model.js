@@ -4,4 +4,14 @@ export const digimonModel = {
     iconSource: '',
     level: '',
     attribute: '',
+    // family
+    // type
+    // priorForms
+    // nextForms
+    information: '',
+    attacks: [{
+        name: '',
+        description: '',
+    }],
+    design: ''
 }
