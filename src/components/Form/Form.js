@@ -7,68 +7,96 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { digimonModel } from '../Models/digimon.model';
+import { getPosts } from '../../actions/posts';
 
 const Form = () => {
     const [postData, setPostData] = useState(digimonModel);
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
+    const allPosts = useSelector((state) => state.posts);
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
+    const [attack, setAttack] = useState(digimonModel.attacks);
 
-    const [attack, setAttack] = useState([{
-        name: '',
-        description: ''
-    }]);
+        const handleAttackChange = (e, index) => {
+            const value = e.target.value;
+            const list = [...attack];
 
-    const handleAttackChange = (e, index) => {
-        const value = e.target.value;
-        const list = [...attack];
+            if (e.target.name.includes("Name")) 
+                list[index].name = value
+            else 
+                list[index].description = value
+            setAttack(list);
+            console.log(attack);
 
-        if (e.target.name.includes("Name")) 
-            list[index].name = value
-        else 
-            list[index].description = value
-        setAttack(list);
-        console.log(attack);
+        };
+        
+        const handleAttackRemove = (index) => {
+            const list = [...attack];
+            list.splice(index, 1);
+            setAttack(list);
+            console.log(attack);
 
-    };
+        };
+        
+        const handleAttackAdd = () => {
+            setAttack([...attack, { name: '', description: '' }]);
+        };
     
-    const handleAttackRemove = (index) => {
-        const list = [...attack];
-        list.splice(index, 1);
-        setAttack(list);
-        console.log(attack);
-
-    };
+    const [nextForm, setNextForm] = useState(digimonModel.nextForms);
     
-    const handleAttackAdd = () => {
-        setAttack([...attack, { name: '', description: '' }]);
-    };
+        const handleNextFormChange = (e, index) => {
+            const value = e.target.value;
+            const list = [...nextForm];
+    
+            list[index]._id = value
+
+            setNextForm(list);
+            console.log(nextForm);
+    
+        };
+        
+        const handleNextFormRemove = (index) => {
+            const list = [...nextForm];
+            list.splice(index, 1);
+            setNextForm(list);
+            console.log(nextForm);
+    
+        };
+        
+        const handleNextFormAdd = () => {
+            setNextForm([...nextForm, { _id: ''}]);
+        };
 
 
     useEffect(() => {
         if(post) setPostData(post);
         if(post) setAttack(post.attacks);
+        if(post) setNextForm(post.nextForms);
     }, [post])
+
+    useEffect(() => {
+        dispatch(getPosts());
+    }, [dispatch])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if(digimonParams.id) {
             postData.attacks = attack;
+            postData.nextForms = nextForm;
             console.log(postData);
             dispatch(updatePost(digimonParams.id, postData));
         } else {
             postData.attacks = attack;
+            postData.nextForms = nextForm;
             console.log(postData);
             dispatch(createPost(postData));
         }
         navigate("/", { replace: true });
         // loading
     }
-
-    console.log(post);
 
     return (
         <Container maxwidth="lg" sx={{marginTop: 5}}>
@@ -209,6 +237,48 @@ const Form = () => {
                                                 <DisabledByDefaultIcon fontSize="medium" />
                                             </IconButton>
                                         )}
+                                    </div>
+                                ))}
+                            </Grid>
+
+                            <Grid item xs={12} direction="row">
+                                <Typography variant="h6" component="h6" style={{marginBottom: 20}}>
+                                    <b>Next forms</b>
+                                    {nextForm.length < 1 && (
+                                        <IconButton aria-label="add" size="small" onClick={handleNextFormAdd}>
+                                            <AddBox fontSize="medium" />
+                                        </IconButton>
+                                    )}
+                                </Typography>
+                                
+                                {nextForm.map((digimon, index) => (
+                                    <div key={index} style={index > 0 ? {marginTop: 20} : null}>
+                                        <FormControl style={{width: '67%'}}>
+                                            <InputLabel>Digimon</InputLabel>
+                                            <Select
+                                                label="Digimon"
+                                                value={digimon._id}
+                                                onChange={(e) => handleNextFormChange(e, index)}
+                                            >
+                                                {allPosts.map((nextForm, index) => (
+                                                    <MenuItem 
+                                                        value={nextForm._id}
+                                                        key={nextForm._id}
+                                                    >
+                                                        {nextForm.name}
+                                                    </MenuItem>
+                                                    
+                                                ))} 
+                                            </Select>
+                                        </FormControl>
+                                        {nextForm.length - 1 === index && nextForm.length < 4 && (
+                                            <IconButton aria-label="add" size="small" onClick={handleNextFormAdd}>
+                                                <AddBox fontSize="medium" />
+                                            </IconButton>
+                                        )}
+                                        <IconButton aria-label="remove" size="small" onClick={() => handleNextFormRemove(index)}>
+                                            <DisabledByDefaultIcon fontSize="medium" />
+                                        </IconButton>
                                     </div>
                                 ))}
                             </Grid>

@@ -1,16 +1,25 @@
 import { Grid, Container, Grow, Paper, Typography, Box, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { digimonModel } from '../../Models/digimon.model'
+import { Link, useParams } from 'react-router-dom';
+import { digimonModel } from '../../Models/digimon.model';
 
 const Digimon = () => {
     const [postData, setPostData] = useState(digimonModel);
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
+    const allPosts = useSelector((state) => state.posts);
     useEffect(() => {
         if(post) setPostData(post);
     }, [post])
+
+    const findNameById = (id) => {
+        let digimon = allPosts.find(element => element._id === id);
+        if (typeof digimon != 'undefined') {
+            console.log(digimon);
+            return digimon.name;
+        } 
+    }
 
     console.log(digimonParams);
 
@@ -81,9 +90,21 @@ const Digimon = () => {
                             </Typography>
                             <Typography variant="body2" component="div">
                                 <b>Next forms: </b>
-                                <span>
-                                    0
-                                </span>
+                                {postData.nextForms ? (
+                                    postData.nextForms.map((digimon, index) => (
+                                        <span>
+                                            <Link to={'/digimon/' + digimon._id}>
+                                                {findNameById(digimon._id)}
+                                                
+                                            </Link>
+                                            {index !== postData.nextForms.length - 1 ? (
+                                                <span>, </span>
+
+                                            ) : <span>.</span>}
+                                        </span>
+                                    ))
+                                   
+                                ): null}
                             </Typography>
 
                             
@@ -97,7 +118,7 @@ const Digimon = () => {
                             </Typography>
                             <ul>
                                 {postData.attacks.map((singleAttack, index) => (
-                                    <li key={index}>
+                                    <li key={index} style={{fontSize: 14}}>
                                         <b>{singleAttack.name}</b>: {singleAttack.description}
                                     </li>
                                 ))}

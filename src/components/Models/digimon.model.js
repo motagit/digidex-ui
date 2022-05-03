@@ -7,7 +7,7 @@ export const digimonModel = {
     // family
     // type
     // priorForms
-    // nextForms
+    nextForms: [],
     information: '',
     attacks: [{
         name: '',
