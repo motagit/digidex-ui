@@ -59,7 +59,7 @@ const Navbar = () => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? () => navigation(-1) : toggleDrawer('left',true)}
+            onClick={location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? () => routeChange(-1) : toggleDrawer('left',true)}
             edge="start"
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >

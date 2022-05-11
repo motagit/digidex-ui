@@ -1,27 +1,23 @@
 import { Grid, Container, Grow, Paper, Typography, Box, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { findDigimonById } from '../../../actions/posts';
 import { digimonModel } from '../../Models/digimon.model';
 
 const Digimon = () => {
     const [postData, setPostData] = useState(digimonModel);
     let digimonParams  = useParams();
-    const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
-    const allPosts = useSelector((state) => state.posts);
-    useEffect(() => {
-        if(post) setPostData(post);
-    }, [post])
 
-    const findNameById = (id) => {
-        let digimon = allPosts.find(element => element._id === id);
-        if (typeof digimon != 'undefined') {
-            console.log(digimon);
-            return digimon.name;
-        } 
+    const getAnswer = async(id) => {
+        const res = await findDigimonById(id);
+        if (postData.name === '') setPostData(res);
+        return res;
     }
 
-    console.log(digimonParams);
+    useEffect(() => {
+        getAnswer(digimonParams.id);
+    }, []);
+
 
     return (
         <Container maxwidth="lg" sx={{marginTop: 5}}>
@@ -82,32 +78,44 @@ const Digimon = () => {
                                     0
                                 </span>
                             </Typography>
+                            
+                            {postData.priorForms.length > 0 && postData.level !== 'Baby' ? (
                             <Typography variant="body2" component="div">
                                 <b>Prior forms: </b>
-                                <span>
-                                    0
-                                </span>
-                            </Typography>
-                            <Typography variant="body2" component="div">
-                                <b>Next forms: </b>
-                                {postData.nextForms ? (
-                                    postData.nextForms.map((digimon, index) => (
+                                {postData.priorForms ? (
+                                    postData.priorForms.map((digimon, index) => (
                                         <span>
                                             <Link to={'/digimon/' + digimon._id}>
-                                                {findNameById(digimon._id)}
+                                                {/* {findNameById(digimon._id)} */}
                                                 
                                             </Link>
+                                            {index !== postData.priorForms.length - 1 ? (
+                                                <span>, </span>
+
+                                            ) : null}
+                                        </span>
+                                    ))
+                                ): null}
+                            </Typography>
+                            ) : null}
+
+                            {postData.nextForms.length > 0 ? (
+                            <Typography variant="body2" component="div">
+                                <b>Next forms: </b>
+                                    {postData.nextForms.map((digimon, index) => (
+                                        <span>
+                                            <a href={"/digimon/" + digimon._id}>
+                                                {digimon.name}
+                                                
+                                            </a>
                                             {index !== postData.nextForms.length - 1 ? (
                                                 <span>, </span>
 
-                                            ) : <span>.</span>}
+                                            ) : null}
                                         </span>
-                                    ))
-                                   
-                                ): null}
+                                    ))}
                             </Typography>
-
-                            
+                            ): null}
                         </Grid>
 
                         <Divider />

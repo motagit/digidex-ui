@@ -47,14 +47,14 @@ const Form = () => {
     const [nextForm, setNextForm] = useState(digimonModel.nextForms);
     
         const handleNextFormChange = (e, index) => {
-            const value = e.target.value;
+            const value = allPosts.find(digimon => digimon._id === e.target.value);
             const list = [...nextForm];
-    
-            list[index]._id = value
 
-            setNextForm(list);
-            console.log(nextForm);
-    
+            list[index] = {
+                _id: value._id,
+                name: value.name
+            };
+            setNextForm(list);    
         };
         
         const handleNextFormRemove = (index) => {
@@ -66,7 +66,7 @@ const Form = () => {
         };
         
         const handleNextFormAdd = () => {
-            setNextForm([...nextForm, { _id: ''}]);
+            setNextForm([...nextForm, { _id: '', name: ''}]);
         };
 
 

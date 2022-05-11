@@ -39,3 +39,14 @@ export const deletePost = (id) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const findDigimonById = async(id) => {
+    try {
+        let data;
+        await api.findById(id).then((response) => data = response.data);
+        // console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
