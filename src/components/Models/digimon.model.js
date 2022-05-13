@@ -1,5 +1,5 @@
 export const digimonModel = {
-    number: 0,
+    number: 1,
     name : '' ,
     iconSource: '',
     level: '',
@@ -9,9 +9,6 @@ export const digimonModel = {
     priorForms: [],
     nextForms: [],
     information: '',
-    attacks: [{
-        name: '',
-        description: '',
-    }],
+    attacks: [],
     design: ''
 }

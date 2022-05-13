@@ -60,24 +60,6 @@ const Digimon = () => {
                                 <b>Attribute: </b>
                                 <span>{postData.attribute}</span>
                             </Typography>
-                            <Typography variant="body2" component="div">
-                                <b>Type: </b>
-                                <span>
-                                    0
-                                </span>
-                            </Typography>
-                            <Typography variant="body2" component="div">
-                                <b>Family: </b>
-                                <span>
-                                    0
-                                </span>
-                            </Typography>
-                            <Typography variant="body2" component="div">
-                                <b>Weight: </b>
-                                <span>
-                                    0
-                                </span>
-                            </Typography>
                             
                             {postData.priorForms.length > 0 && postData.level !== 'Baby' ? (
                             <Typography variant="body2" component="div">
@@ -85,10 +67,10 @@ const Digimon = () => {
                                 {postData.priorForms ? (
                                     postData.priorForms.map((digimon, index) => (
                                         <span>
-                                            <Link to={'/digimon/' + digimon._id}>
-                                                {/* {findNameById(digimon._id)} */}
+                                            <a href={'/digimon/' + digimon._id}>
+                                                {digimon.name}
                                                 
-                                            </Link>
+                                            </a>
                                             {index !== postData.priorForms.length - 1 ? (
                                                 <span>, </span>
 
@@ -120,6 +102,7 @@ const Digimon = () => {
 
                         <Divider />
 
+                        {postData.attacks.length > 0 ? (                    
                         <Grid item xs={12} direction="row">
                             <Typography variant="h6" component="h6">
                                 <b>Attacks</b>
@@ -132,6 +115,7 @@ const Digimon = () => {
                                 ))}
                             </ul>
                         </Grid>
+                        ) : null}
 
                         {postData.design ? (
                             <Grid item xs={12} direction="row">

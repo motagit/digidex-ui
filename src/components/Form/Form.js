@@ -134,7 +134,6 @@ const Form = () => {
                                     label="Name" 
                                     fullWidth 
                                     value={postData.name}
-                                    // fazer esquema para o valor ser sempre o proximo number
                                     onChange={(e) => setPostData({ ...postData, name: e.target.value })}
                                 />
                             </Grid>
@@ -201,6 +200,12 @@ const Form = () => {
                             <Grid item xs={12} direction="row">
                                 <Typography variant="h6" component="h6" style={{marginBottom: 20}}>
                                     <b>Attacks</b>
+
+                                    {attack.length < 1 && (
+                                        <IconButton aria-label="add" size="small" onClick={handleAttackAdd}>
+                                            <AddBox fontSize="medium" />
+                                        </IconButton>
+                                    )}
                                 </Typography>
                                 {attack.map((singleAttack, index) => (
                                     <div key={index} style={index > 0 ? {marginTop: 20} : null}>
@@ -232,11 +237,9 @@ const Form = () => {
                                                 <AddBox fontSize="medium" />
                                             </IconButton>
                                         )}
-                                        {attack.length !== 1 && (
-                                            <IconButton aria-label="remove" size="large" onClick={() => handleAttackRemove(index)}>
-                                                <DisabledByDefaultIcon fontSize="medium" />
-                                            </IconButton>
-                                        )}
+                                        <IconButton aria-label="remove" size="large" onClick={() => handleAttackRemove(index)}>
+                                            <DisabledByDefaultIcon fontSize="medium" />
+                                        </IconButton>
                                     </div>
                                 ))}
                             </Grid>
