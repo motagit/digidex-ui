@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Paper, Typography, Grow, Container , Grid, Divider, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton } from '@mui/material';
+import { TextField, Paper, Typography, Grow, Container , Grid, Divider, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
 import { AddBox } from '@mui/icons-material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FileBase from 'react-file-base64';
@@ -14,6 +14,8 @@ const Form = () => {
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
     const allPosts = useSelector((state) => state.posts);
+    let nextFormPosts = allPosts.filter((post) => post._id !== digimonParams.id && post.level !== "Baby" && post.level !== postData.level);
+
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
@@ -47,21 +49,25 @@ const Form = () => {
     const [nextForm, setNextForm] = useState(digimonModel.nextForms);
     
         const handleNextFormChange = (e, index) => {
-            const value = allPosts.find(digimon => digimon._id === e.target.value);
-            const list = [...nextForm];
+            console.log(e);
 
-            list[index] = {
-                _id: value._id,
-                name: value.name
-            };
-            setNextForm(list);    
+            if (e != null) {
+                const value = e;
+                const list = [...nextForm];
+
+                list[index] = {
+                    _id: value._id,
+                    name: value.name
+                };
+                setNextForm(list);   
+                console.log(nextForm); 
+            }
         };
         
         const handleNextFormRemove = (index) => {
             const list = [...nextForm];
             list.splice(index, 1);
             setNextForm(list);
-            console.log(nextForm);
     
         };
         
@@ -256,23 +262,19 @@ const Form = () => {
                                 
                                 {nextForm.map((digimon, index) => (
                                     <div key={index} style={index > 0 ? {marginTop: 20} : null}>
-                                        <FormControl style={{width: '67%'}}>
-                                            <InputLabel>Digimon</InputLabel>
-                                            <Select
-                                                label="Digimon"
-                                                value={digimon._id}
-                                                onChange={(e) => handleNextFormChange(e, index)}
-                                            >
-                                                {allPosts.map((nextForm, index) => (
-                                                    <MenuItem 
-                                                        value={nextForm._id}
-                                                        key={nextForm._id}
-                                                    >
-                                                        {nextForm.name}
-                                                    </MenuItem>
-                                                    
-                                                ))} 
-                                            </Select>
+                                        <FormControl style={{width: '40%'}}>
+                                            <Autocomplete
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={nextFormPosts}
+                                                value={digimon.name}
+                                                getOptionLabel={option => option.name || digimon.name}
+                                                sx={{ width: 203.3 }}
+                                                renderInput={(option) => (
+                                                    <TextField {...option} value={option._id} key={option._id} label="Digimon"/>
+                                                )}
+                                                onChange={(event, value) => handleNextFormChange(value, index)}
+                                            />
                                         </FormControl>
                                         {nextForm.length - 1 === index && nextForm.length < 4 && (
                                             <IconButton aria-label="add" size="small" onClick={handleNextFormAdd}>

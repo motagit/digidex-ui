@@ -94,11 +94,11 @@ const Navbar = () => {
           <Divider />
           
         <List>
-          {[{text: 'Insert Digimon', link: '/insertDigimon/'}, {text: 'Manage', link: ''}].map((object, index) => (
+          {[{text: 'Insert Digimon', link: '/insertDigimon/'} /*, {text: 'Manage', link: '' }*/].map((object, index) => (
             <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to={object.link} >
               <ListItem button key={object.text}>
                 <ListItemIcon >
-                  {index % 2 === 0 ? <AddCircleIcon /> : <ManageAccountsIcon />}
+                  {index % 2 === 0 ? <AddCircleIcon /> : null /* <ManageAccountsIcon />} */}
                 </ListItemIcon>
                 <ListItemText primary={object.text} />
               </ListItem>
@@ -109,14 +109,14 @@ const Navbar = () => {
         <Divider />
 
         <List>
-          {['About'].map((text, index) => (
-            <ListItem button key={text}>
+          <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/motagit/digidex-ui" target="_blank" rel="noopener noreferrer">
+            <ListItem button>
               <ListItemIcon>
                 <InfoIcon />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary='About' />
             </ListItem>
-          ))}
+          </a>
         </List>
 
         <Divider />
