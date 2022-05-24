@@ -98,7 +98,7 @@ const Navbar = () => {
             <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to={object.link} >
               <ListItem button key={object.text}>
                 <ListItemIcon >
-                  {index % 2 === 0 ? <AddCircleIcon /> : null /* <ManageAccountsIcon />} */}
+                  {index % 2 === 0 && <AddCircleIcon /> /* <ManageAccountsIcon />} */}
                 </ListItemIcon>
                 <ListItemText primary={object.text} />
               </ListItem>

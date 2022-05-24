@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Paper, Typography, Grow, Container , Grid, Divider, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
+import { TextField, Paper, Typography, Grow, Container , Grid, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
 import { AddBox } from '@mui/icons-material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FileBase from 'react-file-base64';
@@ -10,14 +10,17 @@ import { digimonModel } from '../Models/digimon.model';
 import { getPosts } from '../../actions/posts';
 
 const Form = () => {
+    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
     const [postData, setPostData] = useState(digimonModel);
-    let digimonParams  = useParams();
-    const post = useSelector((state) => digimonParams.id ? state.posts.find((p) => p._id === digimonParams.id) : null);
-    const allPosts = useSelector((state) => state.posts);
-    let nextFormPosts = allPosts.filter((post) => post._id !== digimonParams.id && post.level !== "Baby" && post.level !== postData.level);
-
+    // const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     let navigate = useNavigate();
+    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
+    let digimonParams  = useParams();
+    const post = useSelector((state) => digimonParams.id && state.posts.find((p) => p._id === digimonParams.id));
+    const allPosts = useSelector((state) => state.posts);
+    let nextFormPosts = allPosts.filter((post) => post._id !== digimonParams.id && post.level !== "Baby" && post.level !== postData.level);
+    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
 
     const [attack, setAttack] = useState(digimonModel.attacks);
 
@@ -31,7 +34,6 @@ const Form = () => {
                 list[index].description = value
             setAttack(list);
             console.log(attack);
-
         };
         
         const handleAttackRemove = (index) => {
@@ -49,8 +51,6 @@ const Form = () => {
     const [nextForm, setNextForm] = useState(digimonModel.nextForms);
     
         const handleNextFormChange = (e, index) => {
-            console.log(e);
-
             if (e != null) {
                 const value = e;
                 const list = [...nextForm];
@@ -88,20 +88,18 @@ const Form = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        postData.attacks = attack;
+        postData.nextForms = nextForm;
 
         if(digimonParams.id) {
-            postData.attacks = attack;
-            postData.nextForms = nextForm;
-            console.log(postData);
             dispatch(updatePost(digimonParams.id, postData));
+            
         } else {
-            postData.attacks = attack;
-            postData.nextForms = nextForm;
-            console.log(postData);
             dispatch(createPost(postData));
         }
+        
         navigate("/", { replace: true });
-        // loading
+        
     }
 
     return (

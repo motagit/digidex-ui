@@ -77,7 +77,7 @@ const Digimon = () => {
                                             ) : null}
                                         </span>
                                     ))
-                                ): null}
+                                ) : null}
                             </Typography>
                             ) : null}
 

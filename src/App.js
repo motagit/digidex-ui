@@ -8,6 +8,7 @@ import {
   } from "react-router-dom";
 import Navbar from './components/Navbar/Navbar';
 import Form from './components/Form/Form';
+import Auth from './components/Auth/Auth';
   
 const App = () => {
     
@@ -17,6 +18,7 @@ const App = () => {
             <Navbar/>
             <Routes>
                 <Route path='' exact element={<Home />} />
+                <Route path='/login' exact element={<Auth />} />
                 <Route path='/digimon/:id' exact element={<Digimon />} />
                 <Route path='/insertDigimon/' exact element={<Form />} />
                 <Route path='/editDigimon/:id' exact element={<Form />} />
