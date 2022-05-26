@@ -1,14 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import AppBar from '@mui/material/AppBar';
-
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,13 +15,17 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
 import InfoIcon from '@mui/icons-material/Info';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+
+import decode from 'jwt-decode';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import * as actionType from '../../constants/actionTypes';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -34,9 +36,28 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const Navbar = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  let navigation = useNavigate();
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch({ type: actionType.LOGOUT });
+    navigate('/')
+    navigate(0);
+    setUser(null);
+  };
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
+  });
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -46,7 +67,7 @@ const Navbar = () => {
   };
   
   const routeChange = (path) => {
-    navigation(path);
+    navigate(path);
   }
   let location  = useLocation();
 
@@ -91,24 +112,18 @@ const Navbar = () => {
           </IconButton>
         </DrawerHeader>
 
-          <Divider />
-          
-        <List>
-          {[{text: 'Insert Digimon', link: '/insertDigimon/'} /*, {text: 'Manage', link: '' }*/].map((object, index) => (
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to={object.link} >
-              <ListItem button key={object.text}>
-                <ListItemIcon >
-                  {index % 2 === 0 && <AddCircleIcon /> /* <ManageAccountsIcon />} */}
-                </ListItemIcon>
-                <ListItemText primary={object.text} />
-              </ListItem>
-            </Link>
-          ))}
-        </List>
-
         <Divider />
 
         <List>
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to={'/'} >
+            <ListItem button>
+              <ListItemIcon >
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary='Home' />
+            </ListItem>
+          </Link>
+
           <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/motagit/digidex-ui" target="_blank" rel="noopener noreferrer">
             <ListItem button>
               <ListItemIcon>
@@ -121,12 +136,51 @@ const Navbar = () => {
 
         <Divider />
 
-        <ListItem button>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
+        {user?.result?.user && (
+          <>
+            <List>
+                <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to="/insertDigimon/" >
+                  <ListItem button>
+                    <ListItemIcon >
+                      <AddCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Insert Digimon" />
+                  </ListItem>
+                </Link>
+
+                {user?.result?.role === 5001 && (
+                  <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to="/insertDigimon/" >
+                    <ListItem button>
+                      <ListItemIcon >
+                        <ManageAccountsIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Manage Users" />
+                    </ListItem>
+                  </Link>
+                )}
+            </List>
+            <Divider />
+          </>
+        )}
+        
+        {user?.result ? (
+          <ListItem button onClick={() => { toggleDrawer('left', false); logout() }}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+          
+        ) : (
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} onClick={toggleDrawer('left', false)} to="/login" >
+            <ListItem button >
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>
+          </Link>
+        )}
     </Drawer>
     </Box>
   );

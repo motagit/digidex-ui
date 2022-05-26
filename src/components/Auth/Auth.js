@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
 import { Avatar, Button, Paper, Grid, Typography, Container, TextField, InputAdornment, IconButton } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { Visibility } from '@mui/icons-material';
-import { signin, signup } from '../../actions/auth';
+import { signIn, signUp } from '../../actions/auth';
+import { userModel } from '../Models/user.model';
 import './Auth.scss';
-
-const initialState = { 
-    user:'', 
-    email: '', 
-    password: '', 
-    confirmPassword: '' 
-}
 
 const Auth = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
-    const [formData, setFormData] = useState(initialState);
+    const [formData, setFormData] = useState(userModel);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
 
@@ -26,8 +22,9 @@ const Auth = () => {
         
         if (isSignup) {
             dispatch(signUp(formData, navigate));
+            e.target.reset();
         } else {
-
+            dispatch(signIn(formData, navigate));
         }
     }
 
@@ -37,7 +34,7 @@ const Auth = () => {
 
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
-        handleShowPassword(false);
+        setShowPassword(false);
     }
 
     return (
@@ -63,16 +60,18 @@ const Auth = () => {
                                 </Grid>
                             </>
                         )}
+
                         <Grid xs={12} md={12}>
                             <TextField name="user" label="Username" variant="outlined" type={'text'} required
                                 onChange={handleChange} autoFocus fullWidth xs={6}
                             />
                         </Grid>
+
                         <Grid xs={12} md={12}>
                             <TextField name="password" label="Password" variant="outlined" type={showPassword ? 'text' : 'password'} required
                                 onChange={handleChange} fullWidth xs={6}
-                                inputProps={{
-                                    endadornment: (
+                                InputProps={{
+                                    endAdornment: (
                                         <InputAdornment position="end">
                                             <IconButton onClick={handleShowPassword}>
                                                 <Visibility />
@@ -82,19 +81,11 @@ const Auth = () => {
                                 }}
                             />
                         </Grid>
+
                         {isSignup && (
                             <Grid xs={12} md={12}>
                                 <TextField name="confirmPassword" label="Repeat Password" variant="outlined" type={showPassword ? 'text' : 'password'} required
                                     onChange={handleChange} fullWidth xs={6}
-                                    inputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton onClick={handleShowPassword}>
-                                                    <Visibility />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
                                 />
                             </Grid>
                         )}

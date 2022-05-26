@@ -4,8 +4,7 @@ export const digimonModel = {
     iconSource: '',
     level: '',
     attribute: '',
-    // family
-    // type
+    userCreator: '',
     priorForms: [],
     nextForms: [],
     information: '',

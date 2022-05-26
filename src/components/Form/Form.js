@@ -15,6 +15,7 @@ const Form = () => {
     // const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     let navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('profile'));
     /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id && state.posts.find((p) => p._id === digimonParams.id));
@@ -92,10 +93,10 @@ const Form = () => {
         postData.nextForms = nextForm;
 
         if(digimonParams.id) {
-            dispatch(updatePost(digimonParams.id, postData));
+            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }));
             
         } else {
-            dispatch(createPost(postData));
+            dispatch(createPost({ ...postData, userCreator: user?.result?.user }));
         }
         
         navigate("/", { replace: true });
