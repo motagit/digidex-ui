@@ -9,11 +9,27 @@ import {
 import Navbar from './components/Navbar/Navbar';
 import Form from './components/Form/Form';
 import Auth from './components/Auth/Auth';
-  
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
     
 
     return (
+        <>
+        <ToastContainer
+            position="top-right"
+            autoClose={3500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover
+            // theme="dark"
+        />
+
         <Router>
             <Navbar/>
             <Routes>
@@ -24,7 +40,7 @@ const App = () => {
                 <Route path='/editDigimon/:id' exact element={<Form />} />
             </Routes>
         </Router>
-        
+        </>
     );
 }
 

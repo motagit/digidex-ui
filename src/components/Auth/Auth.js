@@ -21,8 +21,8 @@ const Auth = () => {
         e.preventDefault();
         
         if (isSignup) {
-            dispatch(signUp(formData, navigate));
-            e.target.reset();
+            dispatch(signUp(formData, e));
+            // e.target.reset();
         } else {
             dispatch(signIn(formData, navigate));
         }
@@ -43,6 +43,7 @@ const Auth = () => {
             position: 'absolute', 
             top: 100, bottom: 10, left: 10, right: 10
         }}>
+            
             <Paper elevation={3} sx={{padding: 4}} className="paper ">
                 <Avatar className="avatar">
                     <LockIcon />

@@ -1,14 +1,14 @@
 import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
 import * as api from '../api/index';
+import { toast } from 'react-toastify';
 
-// Action Creators
 export const getPosts = () => async (dispatch) => {
     try {
         const { data } = await api.fetchPosts();
 
         dispatch({ type: FETCH_ALL, payload: data });
     } catch (error) {
-        console.log(error);
+        return toast.error(error.response.data.message);
     }
 }
 
@@ -16,18 +16,24 @@ export const createPost = (post) => async (dispatch) => {
     try {
         const { data } = await api.createPost(post);
 
+        toast.success("Digimon successfully created!");
+
         dispatch({ type: CREATE, payload: data });
     } catch (error) {
-        console.log(error);
+        return toast.error(error.response.data.message);
     }
 }
 
 export const updatePost = (id, post) => async (dispatch) => {
     try {
         const { data } = await api.updatePost(id, post);
+
         dispatch({ type: UPDATE, payload: data});
+
+        toast.success("Digimon successfully edited!");
+
     } catch (error) {
-        console.log(error);
+        return toast.error(error.response.data.message);
     }
 }
 
@@ -36,8 +42,11 @@ export const deletePost = (id) => async (dispatch) => {
         await api.deletePost(id);
 
         dispatch( { type: DELETE, payload: id });
+
+        // open modal
+        
     } catch (error) {
-        console.log(error);
+        return toast.error(error.response.data.message);
     }
 }
 
@@ -48,6 +57,6 @@ export const findDigimonById = async(id) => {
 
         return data;
     } catch (error) {
-        console.log(error);
+        return toast.error(error.response.data.message);
     }
 }
