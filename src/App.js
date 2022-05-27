@@ -17,29 +17,29 @@ const App = () => {
 
     return (
         <>
-        <ToastContainer
-            position="top-right"
-            autoClose={3500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable
-            pauseOnHover
-            // theme="dark"
-        />
+            <ToastContainer
+                position="top-right"
+                autoClose={3500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+                // theme="dark"
+            />
 
-        <Router>
-            <Navbar/>
-            <Routes>
-                <Route path='' exact element={<Home />} />
-                <Route path='/login' exact element={<Auth />} />
-                <Route path='/digimon/:id' exact element={<Digimon />} />
-                <Route path='/insertDigimon/' exact element={<Form />} />
-                <Route path='/editDigimon/:id' exact element={<Form />} />
-            </Routes>
-        </Router>
+            <Router>
+                <Navbar/>
+                <Routes>
+                    <Route path='' exact element={<Home />} />
+                    <Route path='/login' exact element={<Auth />} />
+                    <Route path='/digimon/:id' exact element={<Digimon />} />
+                    <Route path='/insertDigimon/' exact element={<Form />} />
+                    <Route path='/editDigimon/:id' exact element={<Form />} />
+                </Routes>
+            </Router>
         </>
     );
 }

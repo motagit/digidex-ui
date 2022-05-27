@@ -4,13 +4,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useDispatch } from 'react-redux';
 import { deletePost } from '../../../actions/posts';
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+
+import DefaultModal from '../../Utils/Modal';
 
 import './Post.scss';
 
 const Post = ({ post }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
+
+     const [open, setOpen] = useState(false);
+     const closeModal = () => setOpen(false);
+     const openModal = () => {
+        setOpen(true);
+    }
+
+    const deleteDigimon = () => {
+        dispatch(deletePost(post._id));
+    }
 
     return (
         <>
@@ -23,6 +35,17 @@ const Post = ({ post }) => {
             
             {user?.result?.user && (
                 <>
+                    <DefaultModal 
+                        openState={open} 
+                        closeModal={closeModal} 
+                        agreeAction={deleteDigimon}
+                        maxWidth='sm' 
+                        fullWidth={true}
+                        
+                        title="Remover Digimon" 
+                        textContent={"Deseja realmente remover o digimon " + post.name + "?"} 
+                    />
+
                     <Link to={'/editDigimon/' + post._id}>
                         <Tooltip title="Edit" placement="top">
                             <IconButton style={{position: 'absolute', margin: 'auto', top: 0, left: 0,}} color="primary" aria-label="update">
@@ -32,7 +55,7 @@ const Post = ({ post }) => {
                     </Link>
 
                     <Tooltip title="Delete" placement="top">
-                        <IconButton style={{position: 'absolute', margin: 'auto', top: 0, right: 0,}} aria-label="update" onClick={() => {{dispatch(deletePost(post._id)); console.log(post._id)}}}>
+                        <IconButton style={{position: 'absolute', margin: 'auto', top: 0, right: 0,}} aria-label="update" onClick={openModal}>
                             <DeleteForeverIcon sx={{fontSize: "large", color: "red"}}/>
                         </IconButton>
                     </Tooltip>

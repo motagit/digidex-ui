@@ -23,7 +23,7 @@ export const signUp = (formData, formElement) => async (dispatch) => {
 
         formElement.target.reset();
 
-        // open modal
+        toast.success(data.message);
 
     } catch (error) {
         return toast.error(error.response.data.message);

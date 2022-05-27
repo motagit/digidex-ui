@@ -39,12 +39,12 @@ export const updatePost = (id, post) => async (dispatch) => {
 
 export const deletePost = (id) => async (dispatch) => {
     try {
-        await api.deletePost(id);
+        let data;
+        await api.deletePost(id).then((response) => data = response.data);
 
         dispatch( { type: DELETE, payload: id });
 
-        // open modal
-        
+        toast.success(data.message);
     } catch (error) {
         return toast.error(error.response.data.message);
     }
