@@ -16,7 +16,7 @@ const Digimon = () => {
 
     useEffect(() => {
         getAnswer(digimonParams.id);
-    }, []);
+    });
 
 
     return (
@@ -37,7 +37,7 @@ const Digimon = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={9} direction="column">
+                        <Grid item xs={8} direction="column">
                             <Typography variant="body2" component="div">
                                 <span>
                                     {postData.information}
@@ -45,12 +45,14 @@ const Digimon = () => {
                             </Typography>
                         </Grid>
                         
-                        <Grid item xs={3} direction="column" style={{textAlign: 'center'}}>
-                            <Box component="span" sx={{ pt: '60px', pb: '40px', pr:'48px', pl: '48px', ml: '10px' ,border: '1px dashed grey' }}>
-                                <img className="image" loading="lazy" src={postData.iconSource} alt={postData.name} />
+                        <Grid item xs={4} direction="column" style={{paddingLeft: '10px'}}>
+                            <Box sx={{ height: 160, border: '1px dashed grey', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <img className="image" loading="lazy" src={postData.iconSource} alt={postData.name}  />
                             </Box>
                         </Grid>
+                    </Grid>
 
+                    <Grid container rowSpacing={3} sx={{padding: 3}}>
                         <Grid item xs={12} direction="row">
                             <Typography variant="body2" component="div">
                                 <b>Level: </b>
@@ -127,8 +129,8 @@ const Digimon = () => {
                                 </Typography>
                             </Grid>
                         ) : null}
-
                     </Grid>
+                    
                 </Paper>
             </Grow>
         </Container>
