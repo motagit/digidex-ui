@@ -34,7 +34,7 @@ const DefaultModal = ({ openState, closeModal, maxWidth, fullWidth, transitionDu
                     <Button onClick={closeModal}>
                         Close
                     </Button>
-                    <Button onClick={agreeAction} autoFocus>
+                    <Button onClick={agreeAction} autoFocus color="primary" variant="contained">
                         Confirm
                     </Button>
                 </DialogActions>

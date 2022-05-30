@@ -42,8 +42,8 @@ const Post = ({ post }) => {
                         maxWidth='sm' 
                         fullWidth={true}
                         
-                        title="Remover Digimon" 
-                        textContent={"Deseja realmente remover o digimon " + post.name + "?"} 
+                        title="Remove Digimon" 
+                        textContent={"Do you really want to remove the digimon " + post.name + "?"} 
                     />
 
                     <Link to={'/editDigimon/' + post._id}>

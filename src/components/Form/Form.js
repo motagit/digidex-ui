@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Paper, Typography, Grow, Container , Grid, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
 import { AddBox } from '@mui/icons-material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { digimonModel } from '../Models/digimon.model';
 import { getPosts } from '../../actions/posts';
+import "./Form.scss"
 
 const Form = () => {
-    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
     const [postData, setPostData] = useState(digimonModel);
-    // const [loading, setLoading] = useState(false);
+    const [fileName, setFilename] = useState("");
     const dispatch = useDispatch();
     let navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -76,7 +77,6 @@ const Form = () => {
             setNextForm([...nextForm, { _id: '', name: ''}]);
         };
 
-
     useEffect(() => {
         if(post) setPostData(post);
         if(post) setAttack(post.attacks);
@@ -118,6 +118,29 @@ const Form = () => {
                         <Grid container rowSpacing={3} sx={{padding: 3}}>
                             <Grid item xs={12} direction="row">
                                 <Typography variant="h5"><b>{digimonParams.id  ? 'Edit' : 'Insert'} a Digimon</b></Typography>
+                            </Grid>
+
+                            <Grid item xs={12} direction="row">
+                                <div className="fileInput">
+                                    <Button
+                                        component="label"
+                                        variant="outlined"
+                                        startIcon={<UploadFileIcon />}
+                                        sx={{ marginRight: "1rem" }}
+                                    >
+                                        {fileName === "" ? (
+                                            <span>Upload Digimon Image/GIF</span>
+                                        ) : (
+                                            <span>{fileName}</span>
+                                        )}
+                                        
+                                        <FileBase 
+                                            type="file"
+                                            multiple={false}
+                                            onDone={({base64, name}) => {setPostData({ ...postData, iconSource: base64 }); setFilename(name)}}
+                                        />
+                                    </Button>
+                                </div>
                             </Grid>
 
                             <Grid item xs={12} direction="row">
@@ -285,16 +308,6 @@ const Form = () => {
                                         </IconButton>
                                     </div>
                                 ))}
-                            </Grid>
-
-                            <Grid item xs={12} direction="row">
-                                <div className="fileInput">
-                                    <FileBase 
-                                        type="file"
-                                        multiple={false}
-                                        onDone={({base64}) => setPostData({ ...postData, iconSource: base64 })}
-                                    />
-                                </div>
                             </Grid>
 
                             <Grid item xs={12}>
