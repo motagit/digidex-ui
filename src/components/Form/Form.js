@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { digimonModel } from '../Models/digimon.model';
 import { getPosts } from '../../actions/posts';
 import "./Form.scss"
+import { CircularProgress } from '@material-ui/core';
 
 const Form = () => {
     const [postData, setPostData] = useState(digimonModel);
@@ -17,6 +18,8 @@ const Form = () => {
     const dispatch = useDispatch();
     let navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
+
+    const [loading, setLoading] = useState(false);
     /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id && state.posts.find((p) => p._id === digimonParams.id));
@@ -91,12 +94,13 @@ const Form = () => {
         e.preventDefault();
         postData.attacks = attack;
         postData.nextForms = nextForm;
+        setLoading(true);
 
         if(digimonParams.id) {
-            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate));
+            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate, setLoading));
             
         } else {
-            dispatch(createPost({ ...postData, userCreator: user?.result?.user }, navigate));
+            dispatch(createPost({ ...postData, userCreator: user?.result?.user }, navigate, setLoading));
         }
     }
 
@@ -310,7 +314,15 @@ const Form = () => {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Button sx={{width: 100}} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
+                                <Button sx={{width: 100}} 
+                                    variant="contained" 
+                                    color="primary"
+                                    size="large" 
+                                    type="submit" 
+                                    fullWidth
+                                    disabled={loading}>
+                                        {loading ? <CircularProgress size={26} /> : "Submit" }
+                                </Button>
                             </Grid>   
                         </Grid>
                     </form>

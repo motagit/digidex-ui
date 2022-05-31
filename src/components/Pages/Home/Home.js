@@ -15,7 +15,6 @@ const Home = () => {
     return (
         <>
         <Container maxwidth="lg">
-            {/* <Button variant="contained" color="primary" onClick={() => {handleOpen(); setCurrentId(null)}}>ADD</Button> */}
             <Grow in>
                 <Container>
                     <Posts/>

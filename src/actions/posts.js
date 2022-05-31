@@ -12,7 +12,7 @@ export const getPosts = () => async (dispatch) => {
     }
 }
 
-export const createPost = (post, navigate) => async (dispatch) => {
+export const createPost = (post, navigate, setLoading) => async (dispatch) => {
     try {
         const { data } = await api.createPost(post);
 
@@ -20,24 +20,30 @@ export const createPost = (post, navigate) => async (dispatch) => {
 
         toast.success("Digimon successfully created!");
 
+        setLoading(false);
+
         navigate('/');
 
     } catch (error) {
+        setLoading(false);
         return toast.error(error.response.data.message);
     }
 }
 
-export const updatePost = (id, post, navigate) => async (dispatch) => {
+export const updatePost = (id, post, navigate, setLoading) => async (dispatch) => {
     try {
         const { data } = await api.updatePost(id, post);
 
         dispatch({ type: UPDATE, payload: data});
 
         toast.success("Digimon successfully edited!");
+
+        setLoading(false);
         
         navigate('/');
 
     } catch (error) {
+        setLoading(false);
         return toast.error(error.response.data.message);
     }
 }
