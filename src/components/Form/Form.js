@@ -93,14 +93,11 @@ const Form = () => {
         postData.nextForms = nextForm;
 
         if(digimonParams.id) {
-            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }));
+            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate));
             
         } else {
-            dispatch(createPost({ ...postData, userCreator: user?.result?.user }));
+            dispatch(createPost({ ...postData, userCreator: user?.result?.user }, navigate));
         }
-        
-        navigate("/", { replace: true });
-        
     }
 
     return (
@@ -151,6 +148,7 @@ const Form = () => {
                                     label="Number" 
                                     value={postData.number}
                                     onChange={(e) => setPostData({ ...postData, number: e.target.value })}
+                                    required
                                 />
                             </Grid>
 
@@ -163,6 +161,7 @@ const Form = () => {
                                     fullWidth 
                                     value={postData.name}
                                     onChange={(e) => setPostData({ ...postData, name: e.target.value })}
+                                    required
                                 />
                             </Grid>
 

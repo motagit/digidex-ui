@@ -12,25 +12,30 @@ export const getPosts = () => async (dispatch) => {
     }
 }
 
-export const createPost = (post) => async (dispatch) => {
+export const createPost = (post, navigate) => async (dispatch) => {
     try {
         const { data } = await api.createPost(post);
 
+        dispatch({ type: CREATE, payload: data });
+
         toast.success("Digimon successfully created!");
 
-        dispatch({ type: CREATE, payload: data });
+        navigate('/');
+
     } catch (error) {
         return toast.error(error.response.data.message);
     }
 }
 
-export const updatePost = (id, post) => async (dispatch) => {
+export const updatePost = (id, post, navigate) => async (dispatch) => {
     try {
         const { data } = await api.updatePost(id, post);
 
         dispatch({ type: UPDATE, payload: data});
 
         toast.success("Digimon successfully edited!");
+        
+        navigate('/');
 
     } catch (error) {
         return toast.error(error.response.data.message);
