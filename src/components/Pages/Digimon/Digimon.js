@@ -1,6 +1,6 @@
 import { Grid, Container, Grow, Paper, Typography, Box, Divider, LinearProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { findDigimonById } from '../../../actions/posts';
 import { digimonModel } from '../../Models/digimon.model';
 
@@ -35,7 +35,7 @@ const Digimon = () => {
                         <Grid container rowSpacing={3} sx={{padding: 3}}>
                             <Grid item xs={12} direction="row">
                                 <Typography variant="h4" component="h4" align='center'>
-                                    #{postData.number} - {postData.name}
+                                    {postData.name}
                                 </Typography>
                             </Grid>
 
@@ -58,11 +58,13 @@ const Digimon = () => {
                             <Grid item xs={12} direction="row">
                                 <Typography variant="body2" component="div">
                                     <b>Level: </b>
-                                    <span>{postData.level}</span>
+                                    <span>
+                                        {postData.level.name}
+                                    </span>
                                 </Typography>
                                 <Typography variant="body2" component="div">
                                     <b>Attribute: </b>
-                                    <span>{postData.attribute}</span>
+                                    <span>{postData.attribute.name}</span>
                                 </Typography>
                                 
                                 {postData.priorForms.length > 0 && postData.level !== 'Baby' ? (
