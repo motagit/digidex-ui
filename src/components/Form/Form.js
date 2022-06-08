@@ -7,7 +7,7 @@ import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { useNavigate, useParams } from 'react-router-dom';
-import { digimonModel } from '../Models/digimon.model';
+import { digimonModel, levelOptions, attributeOptions } from '../Models/digimon.model';
 import { getPosts } from '../../actions/posts';
 import "./Form.scss"
 import { CircularProgress } from '@material-ui/core';
@@ -20,12 +20,11 @@ const Form = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     const [loading, setLoading] = useState(false);
-    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
     let digimonParams  = useParams();
     const post = useSelector((state) => digimonParams.id && state.posts.find((p) => p._id === digimonParams.id));
     const allPosts = useSelector((state) => state.posts);
     let nextFormPosts = allPosts.filter((post) => post._id !== digimonParams.id && post.level !== "Baby" && post.level !== postData.level);
-    /* =-=-=-=-=-=-=-=-=-=-=-=-=-= */
 
     const [attack, setAttack] = useState(digimonModel.attacks);
 
@@ -98,7 +97,6 @@ const Form = () => {
 
         if(digimonParams.id) {
             dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate, setLoading));
-            
         } else {
             dispatch(createPost({ ...postData, userCreator: user?.result?.user }, navigate, setLoading));
         }
@@ -144,18 +142,6 @@ const Form = () => {
                                 </div>
                             </Grid>
 
-                            <Grid item xs={12} direction="row">
-                                <TextField 
-                                    className="inputField"
-                                    name="number" 
-                                    variant="outlined" 
-                                    label="Number" 
-                                    value={postData.number}
-                                    onChange={(e) => setPostData({ ...postData, number: e.target.value })}
-                                    required
-                                />
-                            </Grid>
-
                             <Grid item xs={8} direction="row">
                                 <TextField 
                                     className="inputField"
@@ -174,15 +160,13 @@ const Form = () => {
                                     <InputLabel>Level</InputLabel>
                                     <Select
                                         label="Level"
-                                        value={postData.level}
-                                        onChange={(e) => setPostData({ ...postData, level: e.target.value })}
+                                        value={postData.level._id}
+                                        onChange={(e) => setPostData({ ...postData, level: levelOptions[+e.target.value] })}
                                     >
-                                        <MenuItem value={'Baby'}>Baby</MenuItem>
-                                        <MenuItem value={'In-Training'}>In-Training</MenuItem>
-                                        <MenuItem value={'Rookie'}>Rookie</MenuItem>
-                                        <MenuItem value={'Champion'}>Champion</MenuItem>
-                                        <MenuItem value={'Ultimate'}>Ultimate</MenuItem>
-                                        <MenuItem value={'Mega'}>Mega</MenuItem>
+                                        {levelOptions.map((option, index) => (
+                                            <MenuItem value={index} key={index}>{option.name}</MenuItem>
+                                        ))}
+                                    
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -192,15 +176,12 @@ const Form = () => {
                                     <InputLabel>Attribute</InputLabel>
                                     <Select
                                         label="Attribute"
-                                        value={postData.attribute}
-                                        onChange={(e) => setPostData({ ...postData, attribute: e.target.value })}
+                                        value={postData.attribute._id}
+                                        onChange={(e) => setPostData({ ...postData, attribute: attributeOptions[+e.target.value] })}
                                     >
-                                        <MenuItem value={'Vaccine'}>Vaccine</MenuItem>
-                                        <MenuItem value={'Data'}>Data</MenuItem>
-                                        <MenuItem value={'Virus'}>Virus</MenuItem>
-                                        <MenuItem value={'Free'}>Free</MenuItem>
-                                        <MenuItem value={'Variable'}>Variable</MenuItem>
-                                        <MenuItem value={'Unknown'}>Unknown</MenuItem>
+                                        {attributeOptions.map((option, index) => (
+                                            <MenuItem value={index} key={index}>{option.name}</MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
