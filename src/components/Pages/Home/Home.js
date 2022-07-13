@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Grow, Button } from '@mui/material';
-import { useDispatch } from  'react-redux';
+import { Container } from '@mui/material';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { getPosts } from '../../../actions/posts';
-import Posts from '../../Posts/Posts';
-import Form from '../../Form/Form';
+import DigimonList from '../../DigimonList/DigimonList';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -13,15 +12,9 @@ const Home = () => {
     }, [dispatch])
 
     return (
-        <>
-        <Container maxwidth="lg">
-            <Grow in>
-                <Container>
-                    <Posts/>
-                </Container>
-            </Grow>
+        <Container style={{maxWidth: 'none'}}>
+            <DigimonList/>
         </Container>
-        </>
     );
 }
 
