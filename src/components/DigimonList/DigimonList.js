@@ -1,9 +1,9 @@
+import { CircularProgress, Grid } from '@material-ui/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, CircularProgress, ImageListItem, ImageList, Button } from '@material-ui/core';
-import Post from './Post/Post';
+import DigimonItem from './DigimonItem/DigimonItem';
 
-const Posts = () => {
+const DigimonList = () => {
     const posts = useSelector((state) => state.posts);
 
     return (
@@ -16,18 +16,18 @@ const Posts = () => {
             style={{ minHeight: '90vh' }}
         >
         {!posts.length ? <CircularProgress /> : (
-            <Grid item xs={12}>
-                <ImageList cols={7} rowHeight={160} gap={18}>
+            <Grid item>
+                <ul style={{padding: 0, textAlign: 'center'}}>
                     {posts.map((post) => (
-                        <ImageListItem key={post._id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Post post={post} />
-                        </ImageListItem>
+                        <li style={{display: 'inline-flex'}}>
+                            <DigimonItem post={post} />
+                        </li>
                     ))}
-                </ImageList>
+                </ul>
             </Grid>
         )}
         </Grid>
     )
 }
 
-export default Posts;
+export default DigimonList;
