@@ -75,7 +75,7 @@ const Navbar = () => {
     
     <Box sx={{ display: 'flex', marginBottom: '40px' }}>
       <CssBaseline />
-      <AppBar sx={{backgroundColor: '#050077'}} position="static" open={open} s>
+      <AppBar position="static" open={open} s>
         <Toolbar>
           <IconButton
             color="inherit"
