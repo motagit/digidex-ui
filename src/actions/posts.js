@@ -2,9 +2,9 @@ import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
 import * as api from '../api/index';
 import { toast } from 'react-toastify';
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page, limit) => async (dispatch) => {
     try {
-        const { data } = await api.fetchPosts();
+        const { data } = await api.fetchPosts(page, limit);
 
         dispatch({ type: FETCH_ALL, payload: data });
     } catch (error) {

@@ -11,7 +11,7 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const fetchPosts = () => API.get('/digimons');
+export const fetchPosts = (page, limit) => API.get(`/digimons?page=${page}&limit=${limit}`);
 export const createPost = (newPost) => API.post('/digimons', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/digimons/${id}`, updatedPost);
 export const deletePost = (id) => API.delete(`/digimons/${id}`);
