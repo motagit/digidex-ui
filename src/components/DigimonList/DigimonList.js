@@ -11,48 +11,41 @@ const DigimonList = () => {
 
     const posts = useSelector((state) => state.posts);
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(4);
+    const [limit, setLimit] = useState(27);
+    const [loading, setLoading] = useState(posts.length <= 0);
     const handleChange = (event, value) => {
-        setPage(value); debugger;
-        dispatch(getPosts(value, limit));
-        console.log(page);
+        setPage(value); 
+        setLoading(true);
+        dispatch(getPosts(value, limit, setLoading));
     };
 
     useEffect(() => {
-        dispatch(getPosts(page, limit));
+        setLoading(true);
+        dispatch(getPosts(page, limit, setLoading));
     }, [dispatch])
 
     return (
         <>
-            <Grid
-                container
-                spacing={0}
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-            >
-            {!posts.length ? <CircularProgress /> : (
+            <Grid container spacing={0} direction="row" alignItems="center" justifyContent="center">
+            {loading ? <CircularProgress /> : (
                 <Grid item>
                     <ul style={{padding: 0, textAlign: 'center'}}>
-                        {posts.map((post) => (
+                        {posts.digimons && posts.digimons?.length != 0 ? posts.digimons.map((post) => (
                             <li style={{display: 'inline-flex'}}>
                                 <DigimonItem post={post} />
                             </li>
-                        ))}
+                        )) : (
+                            <p>There is no digimons.</p>
+                        )}
                     </ul>
                 </Grid>
-            )}  
+            )}      
             </Grid>
 
-            <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                style={{marginTop: 30}}
-            >
-                <Pagination count={10} siblingCount={0} defaultPage={6} variant="outlined" color="primary" page={page} onChange={handleChange} />
+            <Grid container direction="row" alignItems="center" justifyContent="center" style={{marginTop: 30, marginBottom: 30}}>
+                <Pagination count={posts?.pagination?.pageCount} siblingCount={0} defaultPage={6} variant="outlined" color="primary" page={page} onChange={handleChange} />
             </Grid>
+            
         </>
     )
 }
