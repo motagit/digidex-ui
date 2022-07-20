@@ -1,30 +1,29 @@
-import { useEffect, useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InfoIcon from '@mui/icons-material/Info';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import HomeIcon from '@mui/icons-material/Home';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import { styled, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import { useEffect, useState } from 'react';
 
 import decode from 'jwt-decode';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as actionType from '../../constants/actionTypes';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -80,17 +79,30 @@ const Navbar = () => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? () => routeChange(-1) : toggleDrawer('left',true)}
+            onClick={location.pathname.includes("digimon".toLowerCase()) ? () => routeChange(-1) : toggleDrawer('left',true)}
             edge="start"
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
-            {location.pathname.includes("digimon") || location.pathname.includes("Digimon") ? (
+            {location.pathname.includes("digimon".toLowerCase()) ? (
               <ArrowBackIcon />
             ) : (
               <MenuIcon />
             )}
             
           </IconButton>
+          
+          {location.pathname.includes("digimon".toLowerCase()) && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => routeChange('/')}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            >
+              <HomeIcon />
+            </IconButton>
+          )}
+
         </Toolbar>
       </AppBar>
       <Drawer
