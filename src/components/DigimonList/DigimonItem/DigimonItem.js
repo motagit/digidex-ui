@@ -1,5 +1,5 @@
 import {React, useState} from 'react';
-import { Tooltip, IconButton } from '@mui/material';
+import { Tooltip, IconButton, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useDispatch } from 'react-redux';
@@ -25,7 +25,7 @@ const DigimonItem = ({ post }) => {
     }
 
     return (
-        <div className='digimonItem' style={{position: 'relative'}}>
+        <Box className='digimonItem' style={{position: 'relative'}} sx={{boxShadow: 2}}>
             <Link className='digimonLink' to={'/digimon/' + post._id}>
                 <img className="image" loading="lazy" src={post.iconSource} alt={post.name}/>
                 <span className="name">{post.name}</span>
@@ -58,7 +58,7 @@ const DigimonItem = ({ post }) => {
                 </Tooltip>
             </>
             )}
-        </div>
+        </Box>
     );
 }
 
