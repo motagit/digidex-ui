@@ -41,7 +41,7 @@ const DigimonList = () => {
     return (
         <>
             <Grid container spacing={2} alignItems="center" justifyContent="center">
-                <Grid item lg={5} sm={6}>
+                <Grid item xs={10} md={5} lg={5} xl={5}>
                     <TextField
                         className="inputField"
                         name="name" 
@@ -53,8 +53,8 @@ const DigimonList = () => {
                     />
                 </Grid>
 
-                <Grid item lg={2} sm={6}>
-                    <FormControl variant="outlined"  fullWidth>
+                <Grid item xs={6} md={2} lg={2} xl={2}>
+                    <FormControl variant="outlined" fullWidth>
                         <InputLabel>Level</InputLabel>
                         <Select
                             label="Level"
@@ -70,7 +70,7 @@ const DigimonList = () => {
                     </FormControl>
                 </Grid>
 
-                <Grid item lg={1} sm={12}>
+                <Grid item xs={4} md={1} lg={1} xl={1}>
                     <Button sx={{width: 100}} 
                         onClick={clearFilters}
                         variant="contained" 
@@ -78,7 +78,7 @@ const DigimonList = () => {
                         size="large" 
                         type="submit" 
                         fullWidth
-                        disabled={loading}>
+                        disabled={loading || (filter.name === '' && filter.level === null)}>
                             Clear
                     </Button>
                 </Grid>
@@ -95,7 +95,7 @@ const DigimonList = () => {
                                 <DigimonItem post={post} />
                             </li>
                         )) : (
-                            <p>There is no digimons.</p>
+                            <p>There are no digimons.</p>
                         )}
                     </ul>
                 </Grid>
