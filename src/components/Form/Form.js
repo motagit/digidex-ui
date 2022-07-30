@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Paper, Typography, Grow, Container , Grid, Button, Box, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
+import { TextField, Paper, Typography, Grow, Container , Grid, Button, InputLabel, Select, MenuItem, FormControl, IconButton, Autocomplete } from '@mui/material';
 import { AddBox } from '@mui/icons-material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPost, updatePost } from '../../actions/posts';
+import { createDigimon, updateDigimon } from '../../actions/posts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { digimonModel, levelOptions, attributeOptions } from '../Models/digimon.model';
-import { getPosts } from '../../actions/posts';
-import "./Form.scss"
+import { getDigimons } from '../../actions/posts';
 import { CircularProgress } from '@material-ui/core';
+import "./Form.scss"
 
 const Form = () => {
     const [postData, setPostData] = useState(digimonModel);
@@ -22,9 +22,9 @@ const Form = () => {
     const [loading, setLoading] = useState(false);
 
     let digimonParams  = useParams();
-    const post = useSelector((state) => digimonParams.id && state.posts.find((p) => p._id === digimonParams.id));
     const allPosts = useSelector((state) => state.posts);
-    let nextFormPosts = allPosts.filter((post) => post._id !== digimonParams.id && post.level !== "Baby" && post.level !== postData.level);
+    const post = useSelector((state) => digimonParams.id && allPosts.digimons.find((p) => p._id === digimonParams.id));
+    let nextFormPosts = allPosts.digimons.filter((post) => post._id !== digimonParams.id && post.level._id !== 0 && post.level._id !== postData.level._id);
 
     const [attack, setAttack] = useState(digimonModel.attacks);
 
@@ -86,7 +86,7 @@ const Form = () => {
     }, [post])
 
     useEffect(() => {
-        dispatch(getPosts());
+        dispatch(getDigimons());
     }, [dispatch])
 
     const handleSubmit = (e) => {
@@ -96,9 +96,9 @@ const Form = () => {
         setLoading(true);
 
         if(digimonParams.id) {
-            dispatch(updatePost(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate, setLoading));
+            dispatch(updateDigimon(digimonParams.id, { ...postData, userCreator: user?.result?.user }, navigate, setLoading));
         } else {
-            dispatch(createPost({ ...postData, userCreator: user?.result?.user }, navigate, setLoading));
+            dispatch(createDigimon({ ...postData, userCreator: user?.result?.user }, navigate, setLoading));
         }
     }
 

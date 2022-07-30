@@ -1,41 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { getPosts } from '../../actions/posts';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDigimons } from '../../actions/posts';
 import { CircularProgress, Grid, TextField, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import DigimonItem from './DigimonItem/DigimonItem';
 import { levelOptions } from '../Models/digimon.model';
 import { Button } from '@mui/material';
+import * as api from '../../api/index';
 
 const DigimonList = () => {
     const dispatch = useDispatch();
 
     const posts = useSelector((state) => state.posts);
-    const [limit, setLimit] = useState(27);
     const [loading, setLoading] = useState(posts.length <= 0);
-    const [filter, setFilter] = useState({ name: '', level: null, page: 1, limit: limit });
+    const defaultFilterValue = { name: '', level: null, page: 1, limit: api.filter.limit };
+    const [filter, setFilter] = useState(api.filter);
 
-    const getDigimons = (pageValue, levelValue) => {
-        let newFilter = filter;
-        newFilter.page = pageValue;
-        newFilter.level = levelValue;
+    const getDigimonsByFilter = (pageValue, levelValue, defaultNameValue) => {
         setLoading(true);
-        dispatch(getPosts(newFilter, setLoading));
+        let newFilter = filter;
+        if (defaultNameValue)
+            newFilter.name = '';
+
+        dispatch(getDigimons({ ...newFilter, page: pageValue, level: levelValue }, setLoading));
     }
 
     const clearFilters = () => {
-        setFilter({ name: '', level: null, page: 1, limit: limit });
-        getDigimons();
+        setFilter(defaultFilterValue);
+        getDigimonsByFilter(defaultFilterValue.page, defaultFilterValue.level, true);
     }
 
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            console.log(filter)
-            getDigimons(filter.page, filter.level);
-        }, 700)
-    
-        return () => clearTimeout(delayDebounceFn)
+        if (posts.length == 0 || filter.name != '') {
+            const delayDebounceFn = setTimeout(() => {
+                getDigimonsByFilter(filter.page, filter.level);
+            }, 500)
+        
+            return () => clearTimeout(delayDebounceFn)
+        }
     }, [filter.name])
 
     return (
@@ -59,7 +61,7 @@ const DigimonList = () => {
                         <Select
                             label="Level"
                             value={filter.level}
-                            onChange={(e) => { setFilter({ ...filter, level: e.target.value }); getDigimons(filter.page, e.target.value) }}
+                            onChange={(e) => { setFilter({ ...filter, level: e.target.value }); getDigimonsByFilter(filter.page, e.target.value) }}
                         >
                             <MenuItem value={null}>-</MenuItem>
                             {levelOptions.map((option, index) => (
@@ -104,7 +106,7 @@ const DigimonList = () => {
 
             <Grid container alignItems="center" justifyContent="center" style={{marginTop: 30, marginBottom: 30}}>
                 <Pagination count={posts?.pagination?.pageCount} siblingCount={0} defaultPage={6} disabled={loading}
-                    variant="outlined" color="primary" page={filter.page} onChange={(e, v) => { setFilter({ ...filter, page: v }); getDigimons(v, filter.level) } } />
+                    variant="outlined" color="primary" page={filter.page} onChange={(e, v) => { setFilter({ ...filter, page: v }); getDigimonsByFilter(v, filter.level) } } />
             </Grid>
             
         </>

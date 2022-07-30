@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API = axios.create({ baseURL:  'http://localhost:5000/'});
-const API = axios.create({ baseURL:  'https://digidex-api.herokuapp.com/'});
+const API = axios.create({ baseURL:  'http://localhost:5000/'});
+// const API = axios.create({ baseURL:  'https://digidex-api.herokuapp.com/'});
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {
@@ -11,9 +11,10 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const fetchPosts = (filter, setLoading) => API.post(`/digimons`, filter).finally(() => setLoading(false));
-export const createPost = (newPost) => API.post('/digimons', newPost);
-export const updatePost = (id, updatedPost) => API.patch(`/digimons/${id}`, updatedPost);
+export const filter = { name: '', level: null, page: 1, limit: 27 };
+export const fetchDigimons = (filterData, setLoading) => API.post(`/digimons/list`, filterData).finally(() => setLoading != null ? setLoading(false) : null);
+export const createDigimon = (newPost) => API.post('/digimons', newPost);
+export const updateDigimon = (id, updatedPost) => API.patch(`/digimons/${id}`, updatedPost);
 export const deletePost = (id) => API.delete(`/digimons/${id}`);
 export const findById = (id) => API.get(`/digimons/${id}`);
 

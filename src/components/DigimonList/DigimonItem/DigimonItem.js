@@ -1,11 +1,10 @@
-import {React, useState} from 'react';
-import { Tooltip, IconButton, Box } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import { React, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from "react-router-dom";
 import { deletePost } from '../../../actions/posts';
-import { Link } from "react-router-dom"
-
 import DefaultModal from '../../Utils/Modal';
 
 import './DigimonItem.scss';
