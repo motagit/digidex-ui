@@ -73,7 +73,7 @@ const DigimonList = () => {
                 </Grid>
 
                 <Grid item xs={4} md={1} lg={1} xl={1}>
-                    <Button sx={{width: 100}} 
+                    <Button sx={{ width: 100, "&.MuiButtonBase-root": { padding: '8px 22px', borderRadius: '4px' } }} 
                         onClick={clearFilters}
                         variant="contained" 
                         color="primary"
@@ -105,8 +105,12 @@ const DigimonList = () => {
             </Grid>
 
             <Grid container alignItems="center" justifyContent="center" style={{marginTop: 30, marginBottom: 30}}>
-                <Pagination count={posts?.pagination?.pageCount} siblingCount={0} defaultPage={6} disabled={loading}
-                    variant="outlined" color="primary" page={filter.page} onChange={(e, v) => { setFilter({ ...filter, page: v }); getDigimonsByFilter(v, filter.level) } } />
+                <Pagination count={posts?.pagination?.pageCount} siblingCount={0} defaultPage={6} 
+                    disabled={loading} variant="outlined" color="primary" 
+                    page={filter.page} onChange={(e, v) => { setFilter({ ...filter, page: v }); getDigimonsByFilter(v, filter.level) } } 
+                    sx={{ "&.MuiPagination-root .MuiPagination-ul .MuiButtonBase-root": 
+                        { margin: '3px', padding: '0px 6px', borderRadius: '16px', border: '1px solid rgba(0, 0, 0, 0.23)' 
+                    } }} />
             </Grid>
             
         </>
