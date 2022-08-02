@@ -74,14 +74,14 @@ const Navbar = () => {
     
     <Box sx={{ display: 'flex', marginBottom: '40px' }}>
       <CssBaseline />
-      <AppBar position="static" open={open} s>
+      <AppBar position="static" open={open} sx={{"&.MuiPaper-root": { backgroundColor: '#145879', color: '#fff' }}}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={location.pathname.includes("digimon".toLowerCase()) ? () => routeChange(-1) : toggleDrawer('left',true)}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ "&.MuiButtonBase-root": { padding: '8px', marginLeft: '-12px', marginRight: '16px' },  mr: 2, ...(open && { display: 'none' }) }}
           >
             {location.pathname.includes("digimon".toLowerCase()) ? (
               <ArrowBackIcon />
