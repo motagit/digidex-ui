@@ -1,0 +1,49 @@
+.digimonItem {
+  background-color: white;
+  border-radius: 10px;
+  margin: 10px;
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.digimonLink {
+  display: block;
+  width: 170px;
+  height: 170px;
+
+  .image, .name {
+    position: absolute;
+  }
+
+  .image {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) ;
+    max-width: 90%;
+    image-rendering: pixelated;
+  }
+
+  .name {
+    color: #fff;
+    font-size: 14px;
+    background-color: rgba(0,0,0,.5);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    text-align: center;
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .digimonLink {
+    width: 140px;
+    height: 140px;
+  }
+}

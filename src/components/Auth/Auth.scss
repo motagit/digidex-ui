@@ -1,0 +1,28 @@
+.auth {
+    .MuiTextField-root {
+        margin-top: 1em;
+        // text-align: center;
+    }
+
+    .paper{
+        display: 'flex';
+        flex-direction: 'column';
+        align-items: 'center';
+        padding:3em;
+    }
+
+    .avatar {
+        margin: 0 auto;
+        background-color: rgb(0, 102, 255);;
+    }
+
+    form {
+        width: '100%'; 
+        margin-top: 2em;
+    }
+
+    .submit {
+        margin-top: 1em;
+    }
+
+}
