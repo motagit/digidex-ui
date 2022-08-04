@@ -41,10 +41,10 @@ export const updateDigimon = (id, post, navigate, setLoading) => async (dispatch
     }
 }
 
-export const deletePost = (id) => async (dispatch) => {
+export const deleteDigimon = (id) => async (dispatch) => {
     try {
         let data;
-        await api.deletePost(id).then((response) => data = response.data);
+        await api.deleteDigimon(id).then((response) => data = response.data);
         dispatch( { type: DELETE, payload: id });
 
         toast.success(data.message);

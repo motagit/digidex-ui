@@ -15,7 +15,7 @@ export const filter = { name: '', level: null, page: 1, limit: 27 };
 export const fetchDigimons = (filterData, setLoading) => API.post(`/digimons/list`, filterData).finally(() => setLoading != null ? setLoading(false) : null);
 export const createDigimon = (newPost) => API.post('/digimons', newPost);
 export const updateDigimon = (id, updatedPost) => API.patch(`/digimons/${id}`, updatedPost);
-export const deletePost = (id) => API.delete(`/digimons/${id}`);
+export const deleteDigimon = (id) => API.delete(`/digimons/${id}`);
 export const findById = (id) => API.get(`/digimons/${id}`);
 
 export const signIn = (formData) => API.post('/users/signin', formData);

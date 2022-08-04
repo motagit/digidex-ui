@@ -93,8 +93,8 @@ const DigimonList = () => {
                 <Grid item>
                     <ul style={{padding: 0, textAlign: 'center'}}>
                         {posts.digimons && posts.digimons?.length != 0 ? posts.digimons.map((post) => (
-                            <li style={{display: 'inline-flex'}}>
-                                <DigimonItem post={post} />
+                            <li style={{display: 'inline-flex'}} key={post._id}>
+                                <DigimonItem digimon={post} />
                             </li>
                         )) : (
                             <p>There are no digimons.</p>

@@ -4,12 +4,12 @@ import { Box, IconButton, Tooltip } from '@mui/material';
 import { React, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
-import { deletePost } from '../../../actions/posts';
+import { deleteDigimon } from '../../../actions/posts';
 import DefaultModal from '../../Utils/Modal';
 
 import './DigimonItem.scss';
 
-const DigimonItem = ({ post }) => {
+const DigimonItem = ({ digimon }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
 
@@ -20,14 +20,14 @@ const DigimonItem = ({ post }) => {
     }
 
     const deleteDigimon = () => {
-        dispatch(deletePost(post._id));
+        dispatch(deleteDigimon(digimon._id));
     }
 
     return (
         <Box className='digimonItem' style={{position: 'relative'}} sx={{boxShadow: 2}}>
-            <Link className='digimonLink' to={'/digimon/' + post._id}>
-                <img className="image" loading="lazy" src={post.iconSource} alt={post.name}/>
-                <span className="name">{post.name}</span>
+            <Link className='digimonLink' to={'/digimon/' + digimon._id}>
+                <img className="image" loading="lazy" src={digimon.iconSource} alt={digimon.name}/>
+                <span className="name">{digimon.name}</span>
             </Link>
 
             {user?.result?.user && (
@@ -39,10 +39,10 @@ const DigimonItem = ({ post }) => {
                     maxWidth='sm' 
                     fullWidth={true}
                     title="Remove Digimon" 
-                    textContent={"Do you really want to remove the digimon " + post.name + "?"} 
+                    textContent={"Do you really want to remove the digimon " + digimon.name + "?"} 
                 />
 
-                <Link to={'/editDigimon/' + post._id}>
+                <Link to={'/editDigimon/' + digimon._id}>
                     <Tooltip title="Edit" placement="top">
                         <IconButton style={{position: 'absolute', margin: 'auto', top: 0, left: 0,}} color="primary" aria-label="update">
                             <EditIcon sx={{fontSize: "large"}}/>
