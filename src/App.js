@@ -5,7 +5,7 @@ import {
     BrowserRouter as Router,
     Routes,
     Route,
-  } from "react-router-dom";
+} from "react-router-dom";
 import Navbar from './components/Navbar/Navbar';
 import Form from './components/Form/Form';
 import Auth from './components/Auth/Auth';
@@ -14,7 +14,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     
-
     return (
         <>
             <ToastContainer
